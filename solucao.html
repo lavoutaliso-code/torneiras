@@ -3,6 +3,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Operação Fim de Ano — tapando os gargalos</title><link rel="stylesheet" href="pele.css">
 <script src="chamadas.js"></script>
+<script src="pausa.js"></script>
 <style>
 .tela{padding:0;gap:0;position:relative}
 .texto{position:absolute;left:0;right:0;top:clamp(14px,2.4vh,30px);z-index:4;text-align:center;
@@ -33,6 +34,9 @@ const NOMES=['Preço','Agenda','Cliente','Entrada','Sobra'];
 const ESCAPA=0.34;                 // quanto cada gargalo rouba do que passa
 const svg=document.getElementById('svg');
 let G={}, abertos=5, tapados=0, jorro=false, rodou=false, tJ=0, moedas=[], pendente=0, cont=0, pilhas=[0,0,0,0,0], cofre=0, girando=0, t0=0, continuo=false;
+// relógio da cena: só anda quando NÃO está pausado (por isso a sequência das
+// tampas não usa setTimeout — setTimeout correria por baixo da pausa)
+let tAnim=0, tPrev=0;
 
 const el=(t,a,pai)=>{const e=document.createElementNS(NS,t);
   for(const k in a) e.setAttribute(k,a[k]); (pai||svg).appendChild(e); return e;};
@@ -231,11 +235,22 @@ function soltarLeva(){
   }
 }
 function passo(ts){
+  const dt = tPrev ? Math.min(ts-tPrev, 50) : 0; tPrev = ts;
+  if(window.PAUSADO){ requestAnimationFrame(passo); return; }
+  tAnim += dt;
+
+  if(rodou){                                  // a sequência roda pelo relógio da cena
+    while(tapados<5 && tAnim >= tapados*560){ poeTampa(tapados,true); tapados++; }
+    if(tapados===5 && !jorro && tAnim >= 5*560+420){
+      giraVolante(); jorro=true; tJ=tAnim; t0=tAnim;
+    }
+  }
+
   if(jorro){                                  // a torneira aberta: jorro sem pausa
     // mesmo espaçamento do primeiro (0,46 da grossura), só que sem parar
     const pxPorMs = (G.W*0.0062)/16.7;
     const inter = (G.T*0.46)/pxPorMs;
-    if(ts-t0>inter){ t0=ts;
+    if(tAnim-t0>inter){ t0=tAnim;
       moedas.push({el:moedaEl(), x:G.xA-G.T*0.6, y:G.PY,
                    vy:0, estado:'cano', furo:null, qtd:1, rot:Math.random()*360});
     }
@@ -276,9 +291,7 @@ function giraVolante(){
 }
 
 function abrir(){                      // UMA animação: veda tudo, depois jorra
-  if(rodou) return; rodou=true;
-  for(let i=0;i<5;i++) setTimeout(()=>{ poeTampa(i,true); tapados=i+1; }, i*560);
-  setTimeout(()=>{ giraVolante(); jorro=true; tJ=performance.now(); }, 5*560+420);
+  if(rodou) return; rodou=true; tAnim=0;   // zera o relógio da cena
 }
 function poeTampa(i, anima){
   const x=G.furos[i], y=G.base, T=G.T;
