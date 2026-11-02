@@ -3,6 +3,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Operação Fim de Ano — 5 gargalos</title><link rel="stylesheet" href="pele.css">
 <script src="chamadas.js"></script>
+<script src="pausa.js"></script>
 <style>
 .tela{padding:0;gap:0;position:relative}
 .texto{position:absolute;left:0;right:0;top:clamp(14px,2.4vh,30px);z-index:4;text-align:center;
@@ -203,6 +204,7 @@ function soltarLeva(){
   }
 }
 function passo(ts){
+  if(window.PAUSADO){ requestAnimationFrame(passo); return; }
   // a leva nova só começa quando a anterior caiu inteira — assim fica alinhado
   if(moedas.length===0){
     if(pendente>0){ pendente--; soltarLeva(); }
