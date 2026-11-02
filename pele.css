@@ -1,0 +1,49 @@
+/* Tokens medidos no pixel da referência (C0C5B7CD…PNG, 1199×1312):
+   traço #6F757B · laranja #FA6503 · fundo #ECEEF2 · cartão #FEFEFE
+   título #000 · subtítulo #7D8189 · ícone #757A81 · traço 13px em 1199 = 1,08% */
+:root{
+  --sf:-apple-system,'SF Pro Text',BlinkMacSystemFont,system-ui,sans-serif;
+  --sfd:-apple-system,'SF Pro Display',BlinkMacSystemFont,system-ui,sans-serif;
+  --fundo:#ECEEF2;
+  --cartao:#FEFEFE;
+  --traco:#6F757B;
+  --laranja:#FA6503;
+  --tinta:#000000;
+  --t2:#7D8189;
+  --t3:#9BA0A7;
+  --icone:#757A81;
+  --tracejado:#C9CDD4;
+  --r:26px;
+  --sombra:0 1px 2px rgba(23,28,38,.04), 0 18px 40px -22px rgba(23,28,38,.28);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--sf);background:var(--fundo);color:var(--tinta);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow:hidden;
+  letter-spacing:-.011em}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+
+.tela{height:100dvh;display:flex;flex-direction:column;
+  padding:clamp(22px,3.4vh,40px) clamp(26px,3.4vw,60px) clamp(18px,2.8vh,34px)}
+
+h1,h2,h3{font-family:var(--sfd);font-weight:600;letter-spacing:-.032em}
+
+/* a ilustração — a régua medida da referência */
+.torn{display:block;width:100%;height:auto}
+.torn .lin{stroke:var(--traco);stroke-width:11;fill:#FFF;
+  stroke-linejoin:round;stroke-linecap:round}
+.torn .lin.vazia{fill:none}
+.torn .ql{stroke:var(--laranja);stroke-width:11;fill:#FFF;
+  stroke-linejoin:round;stroke-linecap:round}
+.torn .gota{stroke:var(--laranja);stroke-width:9;fill:none;
+  stroke-linejoin:round;stroke-linecap:round}
+.torn .racha{stroke:var(--traco);stroke-width:7;fill:none;
+  stroke-linecap:round;stroke-linejoin:round}
+.torn .jato{stroke:var(--laranja);stroke-width:14;fill:none;stroke-linecap:round}
+
+@keyframes pinga{0%{opacity:0;transform:translateY(-10px)}
+  22%{opacity:1}100%{opacity:0;transform:translateY(22px)}}
+.anima .gota{animation:pinga 2.6s ease-in infinite}
+
+.cartao{background:var(--cartao);border-radius:var(--r);box-shadow:var(--sombra)}
+.tracejo{border:1.6px dashed var(--tracejado);border-radius:var(--r);background:var(--cartao)}
