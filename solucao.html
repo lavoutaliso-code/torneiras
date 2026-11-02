@@ -2,6 +2,7 @@
 <html lang="pt-BR"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Operação Fim de Ano — tapando os gargalos</title><link rel="stylesheet" href="pele.css">
+<script src="chamadas.js"></script>
 <style>
 .tela{padding:0;gap:0;position:relative}
 .texto{position:absolute;left:0;right:0;top:clamp(14px,2.4vh,30px);z-index:4;text-align:center;
@@ -285,6 +286,7 @@ function poeTampa(i, anima){
   el('rect',{x:x-T*0.42,y:y-T*0.14,width:T*0.84,height:T*0.30,rx:T*0.13,
     fill:'#FFF',stroke:LARANJA,'stroke-width':G.e},g);
   [-1,1].forEach(d=>el('circle',{cx:x+d*T*0.26,cy:y+T*0.01,r:T*0.055,fill:LARANJA},g));
+  window.chamada(document.getElementById('chamadas'), G, i, {check:true, anima:anima});
   if(anima) g.animate([{opacity:0,transform:'translateY(18px) scale(.7)'},
                        {opacity:1,transform:'none'}],
     {duration:460,easing:'cubic-bezier(.22,1,.3,1)',fill:'backwards'});
